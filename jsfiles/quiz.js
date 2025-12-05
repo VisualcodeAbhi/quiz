@@ -3,21 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const bookName = urlParams.get('book') || "Genesis";
 const levelNumber = parseInt(urlParams.get('level')) || 1;
 
-// Load questions from data.js
 let questions = [];
-if (bibleData[bookName] && bibleData[bookName].levels[levelNumber]) {
-    questions = bibleData[bookName].levels[levelNumber];
-} else {
-    // Fallback or placeholder if data missing
-    questions = [
-        { question: "Question 1 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-        { question: "Question 2 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-        { question: "Question 3 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-        { question: "Question 4 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-        { question: "Question 5 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 }
-    ];
-}
-
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
@@ -37,11 +23,48 @@ const feedbackOverlay = document.getElementById('feedback-overlay');
 // Update UI with Level Info
 // document.title = `${bookName} - Level ${levelNumber}`; // Optional
 
+function initQuiz() {
+    console.log("Initializing Quiz...");
+    
+    // Check if bibleData is defined
+    if (typeof bibleData === 'undefined') {
+        console.error("bibleData is undefined! Waiting...");
+        // Fallback: Retry or show error
+        questionText.innerText = "Error: Data not loaded. Please refresh.";
+        return;
+    }
+
+    // Load questions from data.js
+    if (bibleData[bookName] && bibleData[bookName].levels[levelNumber]) {
+        questions = bibleData[bookName].levels[levelNumber];
+    } else {
+        console.warn(`Data missing for ${bookName} Level ${levelNumber}`);
+        // Fallback or placeholder if data missing
+        questions = [
+            { question: "Question 1 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
+            { question: "Question 2 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
+            { question: "Question 3 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
+            { question: "Question 4 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
+            { question: "Question 5 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 }
+        ];
+    }
+    
+    startQuiz();
+}
+
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
     showQuestion();
 }
+
+// ... (rest of functions: showQuestion, resetState, startTimer, etc need to remain)
+// I need to be careful with the replace tool. I'll include the whole file content to be safe and clean, 
+// or use careful replacement chunks. Since I'm changing the top structure heavily, replace_file_content 
+// with a large range might be best, OR write_to_file completely. 
+// Given the file size is ~269 lines, write_to_file is safer to guarantee structure.
+
+
 
 function showQuestion() {
     resetState();
@@ -265,4 +288,5 @@ function createConfetti() {
 }
 
 // Start the quiz on load
-startQuiz();
+// Start the quiz on load
+window.onload = initQuiz;
