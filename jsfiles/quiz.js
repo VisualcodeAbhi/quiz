@@ -3,6 +3,83 @@ const urlParams = new URLSearchParams(window.location.search);
 const bookName = urlParams.get('book') || "Genesis";
 const levelNumber = parseInt(urlParams.get('level')) || 1;
 
+// Define Data Mapping (Moved from quiz.html)
+const bookDataMap = {
+    "Genesis": "Gdata.js",
+    "Exodus": "Edata.js",
+    "Leviticus": "Ldata.js",
+    "Numbers": "Ndata.js",
+    "Deuteronomy": "Ddata.js",
+    "Joshua": "Joshdata.js",
+    "Judges": "Judgdata.js",
+    "Ruth": "Ruthdata.js",
+    "1 Samuel": "1Samdata.js",
+    "2 Samuel": "2Samdata.js",
+    "1 Kings": "1Kingsdata.js",
+    "2 Kings": "2Kingsdata.js",
+    "1 Chronicles": "1Chrdata.js",
+    "2 Chronicles": "2Chrdata.js",
+    "Ezra": "Ezradata.js",
+    "Nehemiah": "Nehdata.js",
+    "Tobit": "Tobitdata.js",
+    "Judith": "Judithdata.js",
+    "Esther": "Estherdata.js",
+    "1 Maccabees": "1Maccabees.js", // Note: Filename mismatch in original HTML? Keeping as seen.
+    "2 Maccabees": "2Maccabeesdata.js",
+    "Job": "Jobdata.js",
+    "Psalms": "Psalmsdata.js",
+    "Proverbs": "Proverbsdata.js",
+    "Ecclesiastes": "Ecclesiastesdata.js",
+    "Song of Solomon": "SongofSolomondata.js",
+    "Wisdom": "Wisdomdata.js",
+    "Sirach": "Sirachdata.js",
+    "Isaiah": "Isaiahdata.js",
+    "Jeremiah": "Jeremiahdata.js",
+    "Lamentations": "Lamentationsdata.js",
+    "Baruch": "Baruchdata.js",
+    "Ezekiel": "Ezekieldata.js",
+    "Daniel": "Danieldata.js",
+    "Hosea": "Hoseadata.js",
+    "Joel": "Joeldata.js",
+    "Amos": "Amosdata.js",
+    "Obadiah": "Obadiahdata.js",
+    "Jonah": "Jonahdata.js",
+    "Micah": "Micahdata.js",
+    "Nahum": "Nahumdata.js",
+    "Habakkuk": "Habakkukdata.js",
+    "Zephaniah": "Zephaniahdata.js",
+    "Haggai": "Haggaidata.js",
+    "Zechariah": "Zechariahdata.js",
+    "Malachi": "Malachidata.js",
+    "Matthew": "Matthewdata.js",
+    "Mark": "Markdata.js",
+    "Luke": "Lukedata.js",
+    "John": "Johndata.js",
+    "Acts": "Actsdata.js",
+    "Romans": "Romansdata.js",
+    "1 Corinthians": "1Corinthiansdata.js",
+    "2 Corinthians": "2Corinthiansdata.js",
+    "Galatians": "Galatiansdata.js",
+    "Ephesians": "Ephesiansdata.js",
+    "Philippians": "Philippiansdata.js",
+    "Colossians": "Colossiansdata.js",
+    "1 Thessalonians": "1Thessaloniansdata.js",
+    "2 Thessalonians": "2Thessaloniansdata.js",
+    "1 Timothy": "1Timothydata.js",
+    "2 Timothy": "2Timothydata.js",
+    "Titus": "Titusdata.js",
+    "Philemon": "Philemondata.js",
+    "Hebrews": "Hebrewsdata.js",
+    "James": "Jamesdata.js",
+    "1 Peter": "1Peterdata.js",
+    "2 Peter": "2Peterdata.js",
+    "1 John": "1Johndata.js",
+    "2 John": "2Johndata.js",
+    "3 John": "3Johndata.js",
+    "Jude": "Judedata.js",
+    "Revelation": "Revelationdata.js"
+};
+
 let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
@@ -19,21 +96,118 @@ const scoreboardContainer = document.getElementById('scoreboard-container');
 const scoreElement = document.getElementById('score');
 const nextLevelBtn = document.getElementById('next-level-btn');
 const feedbackOverlay = document.getElementById('feedback-overlay');
+const levelPageMap = {
+    "Genesis": "Glevels.html",
+    "Exodus": "Elevels.html",
+    "Leviticus": "Llevels.html",
+    "Numbers": "Nlevels.html",
+    "Deuteronomy": "Dlevels.html",
+    "Joshua": "Joshlevels.html",
+    "Judges": "Judglevels.html",
+    "Ruth": "Ruthlevels.html",
+    "1 Samuel": "1Samlevels.html",
+    "2 Samuel": "2Samlevels.html",
+    "1 Kings": "1Kingslevels.html",
+    "2 Kings": "2Kingslevels.html",
+    "1 Chronicles": "1Chrlevels.html",
+    "2 Chronicles": "2Chrlevels.html",
+    "Ezra": "Ezralevels.html",
+    "Nehemiah": "Nehlevels.html",
+    "Tobit": "Tobitlevels.html",
+    "Judith": "Judithlevels.html",
+    "Esther": "Estherlevels.html",
+    "1 Maccabees": "1Maccabeeslevels.html",
+    "2 Maccabees": "2Maccabeeslevels.html",
+    "Job": "Joblevels.html",
+    "Psalms": "Psalmslevels.html",
+    "Proverbs": "Proverbslevels.html",
+    "Ecclesiastes": "Ecclesiasteslevels.html",
+    "Song of Solomon": "SongofSolomonlevels.html",
+    "Wisdom": "Wisdomlevels.html",
+    "Sirach": "Sirachlevels.html",
+    "Isaiah": "Isaiahlevels.html",
+    "Jeremiah": "Jeremiahlevels.html",
+    "Lamentations": "Lamentationslevels.html",
+    "Baruch": "Baruchlevels.html",
+    "Ezekiel": "Ezekiellevels.html",
+    "Daniel": "Daniellevels.html",
+    "Hosea": "Hosealevels.html",
+    "Joel": "Joellevels.html",
+    "Amos": "Amoslevels.html",
+    "Obadiah": "Obadiahlevels.html",
+    "Jonah": "Jonahlevels.html",
+    "Micah": "Micahlevels.html",
+    "Nahum": "Nahumlevels.html",
+    "Habakkuk": "Habakkuklevels.html",
+    "Zephaniah": "Zephaniahlevels.html",
+    "Haggai": "Haggailevels.html",
+    "Zechariah": "Zechariahlevels.html",
+    "Malachi": "Malachilevels.html",
+    "Matthew": "Matthewlevels.html",
+    "Mark": "Marklevels.html",
+    "Luke": "Lukelevels.html",
+    "John": "Johnlevels.html",
+    "Acts": "Actslevels.html",
+    "Romans": "Romanslevels.html",
+    "1 Corinthians": "1Corinthianslevels.html",
+    "2 Corinthians": "2Corinthianslevels.html",
+    "Galatians": "Galatianslevels.html",
+    "Ephesians": "Ephesianslevels.html",
+    "Philippians": "Philippianslevels.html",
+    "Colossians": "Colossianslevels.html",
+    "1 Thessalonians": "1Thessalonianslevels.html",
+    "2 Thessalonians": "2Thessalonianslevels.html",
+    "1 Timothy": "1Timothylevels.html",
+    "2 Timothy": "2Timothylevels.html",
+    "Titus": "Tituslevels.html",
+    "Philemon": "Philemonlevels.html",
+    "Hebrews": "Hebrewslevels.html",
+    "James": "Jameslevels.html",
+    "1 Peter": "1Peterlevels.html",
+    "2 Peter": "2Peterlevels.html",
+    "1 John": "1Johnlevels.html",
+    "2 John": "2Johnlevels.html",
+    "3 John": "3Johnlevels.html",
+    "Jude": "Judelevels.html",
+    "Revelation": "Revelationlevels.html"
+};
 
-// Update UI with Level Info
-// document.title = `${bookName} - Level ${levelNumber}`; // Optional
-
+// Initialize Logic
 function initQuiz() {
-    console.log("Initializing Quiz...");
-    
-    // Check if bibleData is defined
-    if (typeof bibleData === 'undefined') {
-        console.error("bibleData is undefined! Waiting...");
-        // Fallback: Retry or show error
-        questionText.innerText = "Error: Data not loaded. Please refresh.";
-        return;
-    }
+    console.log(`Initializing Quiz for: ${bookName}, Level: ${levelNumber}`);
 
+    // Determine Script Source
+    const scriptFile = bookDataMap[bookName] || 'Gdata.js';
+    const scriptPath = `jsfiles/${scriptFile}`;
+
+    console.log(`Loading data from: ${scriptPath}`);
+
+    // Dynamically load the script
+    const script = document.createElement('script');
+    script.src = scriptPath;
+    
+    script.onload = () => {
+        console.log("Data script loaded successfully.");
+        // Check if bibleData is defined
+        if (typeof bibleData === 'undefined') {
+            console.error("bibleData is undefined after script load!");
+            questionText.innerText = "Error: Data file corrupted or empty.";
+            return;
+        }
+
+        loadQuestions();
+        startQuiz();
+    };
+
+    script.onerror = () => {
+        console.error("Failed to load data script.");
+        questionText.innerText = "Error: Could not load quiz data. Check internet connection.";
+    };
+
+    document.head.appendChild(script);
+}
+
+function loadQuestions() {
     // Load questions from data.js
     if (bibleData[bookName] && bibleData[bookName].levels[levelNumber]) {
         questions = bibleData[bookName].levels[levelNumber];
@@ -41,33 +215,30 @@ function initQuiz() {
         console.warn(`Data missing for ${bookName} Level ${levelNumber}`);
         // Fallback or placeholder if data missing
         questions = [
-            { question: "Question 1 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-            { question: "Question 2 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-            { question: "Question 3 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-            { question: "Question 4 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 },
-            { question: "Question 5 (Placeholder)", options: ["A", "B", "C", "D"], correct: 0 }
+            { question: "No questions found for this level.", options: ["OK"], correct: 0 }
         ];
+        questionText.innerText = "No questions found for this level.";
     }
-    
-    startQuiz();
 }
 
 function startQuiz() {
+    if (questions.length === 0 || questions[0].question === "No questions found for this level.") {
+         // Should show error state in showQuestion or handled here
+    }
     currentQuestionIndex = 0;
     score = 0;
     showQuestion();
 }
 
-// ... (rest of functions: showQuestion, resetState, startTimer, etc need to remain)
-// I need to be careful with the replace tool. I'll include the whole file content to be safe and clean, 
-// or use careful replacement chunks. Since I'm changing the top structure heavily, replace_file_content 
-// with a large range might be best, OR write_to_file completely. 
-// Given the file size is ~269 lines, write_to_file is safer to guarantee structure.
-
-
-
 function showQuestion() {
     resetState();
+    
+    // Safety check
+    if (!questions || questions.length === 0) {
+        questionText.innerText = "No questions availalble.";
+        return;
+    }
+
     const currentQuestion = questions[currentQuestionIndex];
     questionText.innerText = currentQuestion.question;
 
@@ -170,90 +341,9 @@ function saveProgress() {
         total: questions.length,
         timestamp: new Date().toISOString()
     };
-
-    // Update global stats
-    if (!userProgress.stats) userProgress.stats = { totalQuestions: 0, totalCorrect: 0, levelsCompleted: 0 };
-    // Note: This simple logic adds to stats every time. Better logic would be to only add *new* questions answered or just recalc from level data.
-    // For simplicity, let's just track "Last Score" in level data and maybe aggregate later.
     
     localStorage.setItem('bibleQuizProgress', JSON.stringify(userProgress));
 }
-
-const levelPageMap = {
-    "Genesis": "Glevels.html",
-    "Exodus": "Elevels.html",
-    "Leviticus": "Llevels.html",
-    "Numbers": "Nlevels.html",
-    "Deuteronomy": "Dlevels.html",
-    "Joshua": "Joshlevels.html",
-    "Judges": "Judglevels.html",
-    "Ruth": "Ruthlevels.html",
-    "1 Samuel": "1Samlevels.html",
-    "2 Samuel": "2Samlevels.html",
-    "1 Kings": "1Kingslevels.html",
-    "2 Kings": "2Kingslevels.html",
-    "1 Chronicles": "1Chrlevels.html",
-    "2 Chronicles": "2Chrlevels.html",
-    "Ezra": "Ezralevels.html",
-    "Nehemiah": "Nehlevels.html",
-    "Tobit": "Tobitlevels.html",
-    "Judith": "Judithlevels.html",
-    "Esther": "Estherlevels.html",
-    "1 Maccabees": "1Maccabeeslevels.html",
-    "2 Maccabees": "2Maccabeeslevels.html",
-    "Job": "Joblevels.html",
-    "Psalms": "Psalmslevels.html",
-    "Proverbs": "Proverbslevels.html",
-    "Ecclesiastes": "Ecclesiasteslevels.html",
-    "Song of Solomon": "SongofSolomonlevels.html",
-    "Wisdom": "Wisdomlevels.html",
-    "Sirach": "Sirachlevels.html",
-    "Isaiah": "Isaiahlevels.html",
-    "Jeremiah": "Jeremiahlevels.html",
-    "Lamentations": "Lamentationslevels.html",
-    "Baruch": "Baruchlevels.html",
-    "Ezekiel": "Ezekiellevels.html",
-    "Daniel": "Daniellevels.html",
-    "Hosea": "Hosealevels.html",
-    "Joel": "Joellevels.html",
-    "Amos": "Amoslevels.html",
-    "Obadiah": "Obadiahlevels.html",
-    "Jonah": "Jonahlevels.html",
-    "Micah": "Micahlevels.html",
-    "Nahum": "Nahumlevels.html",
-    "Habakkuk": "Habakkuklevels.html",
-    "Zephaniah": "Zephaniahlevels.html",
-    "Haggai": "Haggailevels.html",
-    "Zechariah": "Zechariahlevels.html",
-    "Malachi": "Malachilevels.html",
-    "Matthew": "Matthewlevels.html",
-    "Mark": "Marklevels.html",
-    "Luke": "Lukelevels.html",
-    "John": "Johnlevels.html",
-    "Acts": "Actslevels.html",
-    "Romans": "Romanslevels.html",
-    "1 Corinthians": "1Corinthianslevels.html",
-    "2 Corinthians": "2Corinthianslevels.html",
-    "Galatians": "Galatianslevels.html",
-    "Ephesians": "Ephesianslevels.html",
-    "Philippians": "Philippianslevels.html",
-    "Colossians": "Colossianslevels.html",
-    "1 Thessalonians": "1Thessalonianslevels.html",
-    "2 Thessalonians": "2Thessalonianslevels.html",
-    "1 Timothy": "1Timothylevels.html",
-    "2 Timothy": "2Timothylevels.html",
-    "Titus": "Tituslevels.html",
-    "Philemon": "Philemonlevels.html",
-    "Hebrews": "Hebrewslevels.html",
-    "James": "Jameslevels.html",
-    "1 Peter": "1Peterlevels.html",
-    "2 Peter": "2Peterlevels.html",
-    "1 John": "1Johnlevels.html",
-    "2 John": "2Johnlevels.html",
-    "3 John": "3Johnlevels.html",
-    "Jude": "Judelevels.html",
-    "Revelation": "Revelationlevels.html"
-};
 
 nextLevelBtn.addEventListener('click', () => {
     const nextLevel = levelNumber + 1;
@@ -287,6 +377,6 @@ function createConfetti() {
     }
 }
 
-// Start the quiz on load
-// Start the quiz on load
-window.onload = initQuiz;
+// Start the quiz logic immediately (the script itself is defer or at bottom of body)
+// But to be safe, call initQuiz
+initQuiz();
