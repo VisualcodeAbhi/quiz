@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Statistics</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        body {
+            background: linear-gradient(180deg, #001f3f 0%, #4b3ca3 100%);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .stats-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffc107;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        .back-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stats-container">
+        <h1>My Statistics</h1>
+
+        <div class="stat-card">
+            <div class="stat-value" id="total-levels">0</div>
+            <div class="stat-label">Levels Completed</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-value" id="total-score">0</div>
+            <div class="stat-label">Total Score</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-value" id="accuracy">0%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+
+        <a href="home.html" class="back-btn">Back to Home</a>
+    </div>
+
+    <script>
+        const userProgress = JSON.parse(localStorage.getItem('bibleQuizProgress')) || {};
+        let totalLevels = 0;
+        let totalScore = 0;
+        let totalQuestions = 0;
+
+        // Iterate through books and levels
+        for (const book in userProgress) {
+            if (book === 'stats') continue; // Skip stats object if it exists
+            for (const level in userProgress[book]) {
+                const levelData = userProgress[book][level];
+                if (levelData.completed) {
+                    totalLevels++;
+                    totalScore += levelData.score;
+                    totalQuestions += levelData.total;
+                }
+            }
+        }
+
+        document.getElementById('total-levels').innerText = totalLevels;
+        document.getElementById('total-score').innerText = totalScore;
+
+        const accuracy = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+        document.getElementById('accuracy').innerText = accuracy + "%";
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="te">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Quiz</title>
+    <link rel="stylesheet" href="quiz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Mandali&display=swap"
+        rel="stylesheet">
+    <!-- Mandali is a good font for Telugu -->
+</head>
+
+<body>
+    <div class="quiz-container" id="quiz-container">
+        <div class="header">
+            <div class="timer-circle">
+                <span id="timer">30</span>
+            </div>
+        </div>
+
+        <div class="icon-container">
+            <img src="Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
+        </div>
+
+        <div class="question-box">
+            <p id="question-text">Loading...</p>
+        </div>
+
+        <div class="options-container" id="options-container">
+            <!-- Options will be injected by JS -->
+        </div>
+
+        <button class="next-btn" id="next-btn" style="display: none;">Next</button>
+    </div>
+
+    <!-- Scoreboard Section (Hidden by default) -->
+    <div class="scoreboard-container" id="scoreboard-container" style="display: none;">
+        <div class="icon-container">
+            <img src="Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
+        </div>
+        <h2>Level Completed!</h2>
+        <div class="score-display">
+            Your Score: <span id="score">0</span>/5
+        </div>
+        <button class="next-btn" id="next-level-btn">Go Next Level</button><br>
+        <button class="next-btn" id="go-home-btn">Go Home</button>
+    </div>
+
+    <!-- Feedback Overlay -->
+    <div id="feedback-overlay" class="feedback-overlay"></div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const book = urlParams.get('book') || 'Genesis';
+        let scriptSrc = 'Gdata.js';
+        if (book === 'Exodus') scriptSrc = 'Edata.js';
+        if (book === 'Leviticus') scriptSrc = 'Ldata.js';
+        if (book === 'Numbers') scriptSrc = 'Ndata.js';
+        if (book === 'Deuteronomy') scriptSrc = 'Ddata.js';
+        if (book === 'Joshua') scriptSrc = 'Joshdata.js';
+        if (book === 'Judges') scriptSrc = 'Judgdata.js';
+        if (book === 'Ruth') scriptSrc = 'Ruthdata.js';
+        if (book === '1 Samuel') scriptSrc = '1Samdata.js';
+        if (book === '2 Samuel') scriptSrc = '2Samdata.js';
+        if (book === '1 Kings') scriptSrc = '1Kingsdata.js';
+        if (book === '2 Kings') scriptSrc = '2Kingsdata.js';
+        if (book === '1 Chronicles') scriptSrc = '1Chrdata.js';
+        if (book === '2 Chronicles') scriptSrc = '2Chrdata.js';
+        if (book === 'Ezra') scriptSrc = 'Ezradata.js';
+        if (book === 'Nehemiah') scriptSrc = 'Nehdata.js';
+        if (book === 'Tobit') scriptSrc = 'Tobitdata.js';
+        if (book === 'Judith') scriptSrc = 'Judithdata.js';
+        if (book === 'Esther') scriptSrc = 'Estherdata.js';
+        if (book === '1 Maccabees') scriptSrc = '1Maccabees.js';
+        if (book === '2 Maccabees') scriptSrc = '2Maccabeesdata.js';
+        if (book === 'Job') scriptSrc = 'Jobdata.js';
+        if (book === 'Psalms') scriptSrc = 'Psalmsdata.js';
+        if (book === 'Proverbs') scriptSrc = 'Proverbsdata.js';
+        if (book === 'Ecclesiastes') scriptSrc = 'Ecclesiastesdata.js';
+        if (book === 'Song of Solomon') scriptSrc = 'SongofSolomondata.js';
+        if (book === 'Wisdom') scriptSrc = 'Wisdomdata.js';
+        if (book === 'Sirach') scriptSrc = 'Sirachdata.js';
+        if (book === 'Isaiah') scriptSrc = 'Isaiahdata.js';
+        if (book === 'Jeremiah') scriptSrc = 'Jeremiahdata.js';
+        if (book === 'Lamentations') scriptSrc = 'Lamentationsdata.js';
+        if (book === 'Baruch') scriptSrc = 'Baruchdata.js';
+        if (book === 'Ezekiel') scriptSrc = 'Ezekieldata.js';
+        if (book === 'Daniel') scriptSrc = 'Danieldata.js';
+        if (book === 'Hosea') scriptSrc = 'Hoseadata.js';
+        if (book === 'Joel') scriptSrc = 'Joeldata.js';
+        if (book === 'Amos') scriptSrc = 'Amosdata.js';
+        if (book === 'Obadiah') scriptSrc = 'Obadiahdata.js';
+        if (book === 'Jonah') scriptSrc = 'Jonahdata.js';
+        if (book === 'Micah') scriptSrc = 'Micahdata.js';
+        if (book === 'Nahum') scriptSrc = 'Nahumdata.js';
+        if (book === 'Habakkuk') scriptSrc = 'Habakkukdata.js';
+        if (book === 'Zephaniah') scriptSrc = 'Zephaniahdata.js';
+        if (book === 'Haggai') scriptSrc = 'Haggaidata.js';
+        if (book === 'Zechariah') scriptSrc = 'Zechariahdata.js';
+        if (book === 'Malachi') scriptSrc = 'Malachidata.js';
+        if (book === 'Matthew') scriptSrc = 'Matthewdata.js';
+        if (book === 'Mark') scriptSrc = 'Markdata.js';
+        if (book === 'Luke') scriptSrc = 'Lukedata.js';
+        if (book === 'John') scriptSrc = 'Johndata.js';
+        if (book === 'Acts') scriptSrc = 'Actsdata.js';
+        if (book === 'Romans') scriptSrc = 'Romansdata.js';
+        if (book === '1 Corinthians') scriptSrc = '1Corinthiansdata.js';
+        if (book === '2 Corinthians') scriptSrc = '2Corinthiansdata.js';
+        if (book === 'Galatians') scriptSrc = 'Galatiansdata.js';
+        if (book === 'Ephesians') scriptSrc = 'Ephesiansdata.js';
+        if (book === 'Philippians') scriptSrc = 'Philippiansdata.js';
+        if (book === 'Colossians') scriptSrc = 'Colossiansdata.js';
+        if (book === '1 Thessalonians') scriptSrc = '1Thessaloniansdata.js';
+        if (book === '2 Thessalonians') scriptSrc = '2Thessaloniansdata.js';
+        if (book === '1 Timothy') scriptSrc = '1Timothydata.js';
+        if (book === '2 Timothy') scriptSrc = '2Timothydata.js';
+        if (book === 'Titus') scriptSrc = 'Titusdata.js';
+        if (book === 'Philemon') scriptSrc = 'Philemondata.js';
+        if (book === 'Hebrews') scriptSrc = 'Hebrewsdata.js';
+        if (book === 'James') scriptSrc = 'Jamesdata.js';
+        if (book === '1 Peter') scriptSrc = '1Peterdata.js';
+        if (book === '2 Peter') scriptSrc = '2Peterdata.js';
+        if (book === '1 John') scriptSrc = '1Johndata.js';
+        if (book === '2 John') scriptSrc = '2Johndata.js';
+        if (book === '3 John') scriptSrc = '3Johndata.js';
+        if (book === 'Jude') scriptSrc = 'Judedata.js';
+        if (book === 'Revelation') scriptSrc = 'Revelationdata.js';
+
+        document.write('<script src="' + scriptSrc + '"><\/script>');
+    </script>
+    <script src="quiz.js"></script>
+</body>
+
+</html>

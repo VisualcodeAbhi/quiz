@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(180deg, #001f3f 0%, #4b3ca3 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    /* Prevent scrollbars during confetti */
+}
+
+.quiz-container,
+.scoreboard-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.scoreboard-container {
+    text-align: center;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.timer-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #ffc107;
+    /* Yellow/Gold */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Creating a scribble effect with pseudo-elements */
+.timer-circle::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border: 2px solid #ffc107;
+    border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+    transform: rotate(-10deg);
+}
+
+.timer-circle::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 2px solid #ffdb58;
+    border-radius: 60% 40% 55% 45% / 40% 60% 45% 55%;
+    transform: rotate(20deg);
+}
+
+.icon-container {
+    margin-bottom: 30px;
+    width: 120px;
+    height: 120px;
+}
+
+.quiz-icon {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    object-fit: contain;
+}
+
+.question-box {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    padding: 15px 20px;
+    border-radius: 30px;
+    margin-bottom: 40px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.question-box p {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    line-height: 1.4;
+    font-family: 'Mandali', sans-serif;
+    /* Telugu font */
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.option-btn {
+    background: #c2a379;
+    /* Tan/Brownish color from image */
+    border: none;
+    padding: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+    position: relative;
+    /* Irregular shape for brush effect */
+    clip-path: polygon(1% 5%, 99% 0%, 100% 95%, 98% 100%,
+            2% 98%, 0% 10%);
+    background: linear-gradient(90deg, #d4b483 0%, #b08d55 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+    width: 80%;
+    margin: 0 auto;
+    /* Center buttons */
+}
+
+.option-btn:hover {
+    transform: scale(1.02);
+    background: linear-gradient(90deg, #e0c090 0%, #c09a60 100%);
+}
+
+.option-btn:active {
+    transform: scale(0.98);
+}
+
+.next-btn {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.next-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Feedback Overlay */
+.feedback-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.feedback-icon {
+    font-size: 100px;
+    font-weight: bold;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.feedback-icon.correct {
+    color: #4CAF50;
+    text-shadow: 0 0 20px rgba(76, 175, 80, 0.8);
+}
+
+.feedback-icon.wrong {
+    color: #F44336;
+    text-shadow: 0 0 20px rgba(244, 67, 54, 0.8);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Confetti */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: 99;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(720deg);
+    }
+}

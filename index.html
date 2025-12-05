@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @media screen and (max-width: 768px) {
+            .img {
+                display: none;
+            }
+            img {
+                display: block;
+                margin: auto;
+                max-width: 100%;
+                height: auto;
+            }
+            body{
+                background-color: rgba(0, 39, 75);
+                display: flex;
+                flex-direction: column; 
+                align-items: center;
+                justify-content: center;
+                height: 90vh;
+                font-size: 20px;
+                color: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="img">This webpage is designed to work on small devices only </div>
+    <img src="./Logo.png" alt="Logo">
+</body>
+</html>
