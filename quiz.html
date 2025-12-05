@@ -20,7 +20,7 @@
         </div>
 
         <div class="icon-container">
-            <img src="Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
+            <img src="images/Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
         </div>
 
         <div class="question-box">
@@ -37,7 +37,7 @@
     <!-- Scoreboard Section (Hidden by default) -->
     <div class="scoreboard-container" id="scoreboard-container" style="display: none;">
         <div class="icon-container">
-            <img src="Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
+            <img src="images/Logo.png" alt="Bible Quiz Logo" class="quiz-icon">
         </div>
         <h2>Level Completed!</h2>
         <div class="score-display">
@@ -127,9 +127,9 @@
         if (book === 'Jude') scriptSrc = 'Judedata.js';
         if (book === 'Revelation') scriptSrc = 'Revelationdata.js';
 
-        document.write('<script src="' + scriptSrc + '"><\/script>');
+        document.write('<script src="jsfiles/' + scriptSrc + '"><\/script>');
     </script>
-    <script src="quiz.js"></script>
+    <script src="jsfiles/quiz.js"></script>
 </body>
 
 </html>
