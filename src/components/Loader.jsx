@@ -4,7 +4,10 @@ import './loader.css';
 const Loader = () => {
     return (
         <div className="spinner-container">
-            <div className="spinner"></div>
+            <div className="spinner-wrapper">
+                <div className="spinner"></div>
+                <img src="/images/Logo1.png" alt="Loading..." className="loader-logo" />
+            </div>
         </div>
     );
 };
