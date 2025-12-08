@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { bookNameMap } from '../bookNames';
+import Loader from '../components/Loader';
 
 const Levels = () => {
     const { book: bookFile } = useParams();
@@ -27,7 +28,7 @@ const Levels = () => {
         loadData();
     }, [bookFile]);
 
-    if (loading) return <div className="loading-text">Loading...</div>;
+    if (loading) return <Loader />;
     if (!bookData) return <div className="error-text">Book data not found.</div>;
 
     // Persistance Logic

@@ -1,12 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Global variable to track splash state within the current session (resets on refresh)
+let hasShownSplash = false;
+
 const Home = () => {
     const navigate = useNavigate();
-    const [showSplash, setShowSplash] = React.useState(true);
+    const [showSplash, setShowSplash] = React.useState(!hasShownSplash);
     const [fading, setFading] = React.useState(false);
 
     React.useEffect(() => {
+        if (!showSplash) return;
+
         // Wait 2s then start fade out
         const timer1 = setTimeout(() => {
             setFading(true);
@@ -15,13 +20,14 @@ const Home = () => {
         // Wait another 1s for fade to finish, then remove splash
         const timer2 = setTimeout(() => {
             setShowSplash(false);
+            hasShownSplash = true;
         }, 3000);
 
         return () => {
             clearTimeout(timer1);
             clearTimeout(timer2);
         };
-    }, []);
+    }, [showSplash]);
 
     if (showSplash) {
         return (

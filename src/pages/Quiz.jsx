@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Confetti from 'react-confetti';
 import { bookNameMap } from '../bookNames';
+import Loader from '../components/Loader';
 
 const Quiz = () => {
     const { book: bookFile, level } = useParams();
@@ -118,7 +119,7 @@ const Quiz = () => {
         localStorage.setItem('bibleQuizProgress', JSON.stringify(userProgress));
     };
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loader />;
     if (!questions.length) return <div>No questions for this level.</div>;
 
     if (quizFinished) {
