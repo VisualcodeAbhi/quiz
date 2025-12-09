@@ -60,8 +60,8 @@ const OldTestament = () => {
             </header>
             <div style={{ width: '100%', textAlign: 'center' }}>
                 {books.map((book) => (
-                    <Link to={`/levels/${book.file}`} key={book.id} className="book-link">
-                        <div className="box">{book.name}</div>
+                    <Link to={`/levels/${book.file}`} key={book.id} className="book-link box">
+                        {book.name}
                     </Link>
                 ))}
             </div>
