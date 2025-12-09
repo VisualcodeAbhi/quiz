@@ -289,8 +289,51 @@ header {
     color: white;
 }
 
+
 .score-text {
     font-size: 24px;
     margin: 20px 0;
     font-weight: bold;
+}
+
+.home-bg-wrapper {
+    background: url('/images/homebg.png') no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.books-bg-wrapper {
+    background: url('/images/bg.png') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.levels-bg-wrapper {
+    background: url('/images/levels.png') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+/* Scroll Animation Classes */
+.scroll-hidden {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.scroll-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }

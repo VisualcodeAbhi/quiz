@@ -50,32 +50,34 @@ const Levels = () => {
     }
 
     return (
-        <div className="container" style={{ justifyContent: 'flex-start', paddingTop: '20px' }}>
-            <header>
-                <div className="menu-icon" onClick={() => navigate(-1)}>&#8592;</div>
-                <h1 id="book-title">{bookNameMap[bookName] || bookName} Levels</h1>
-            </header>
+        <div className="levels-bg-wrapper">
+            <div className="container" style={{ justifyContent: 'flex-start', paddingTop: '20px' }}>
+                <header>
+                    <div className="menu-icon" onClick={() => navigate(-1)}>&#8592;</div>
+                    <h1 id="book-title">{bookNameMap[bookName] || bookName} Levels</h1>
+                </header>
 
-            <div className="grid-container" id="levels-grid">
-                {levels.map((lvl) => (
-                    <button
-                        key={lvl.level}
-                        className="level-btn"
-                        style={{
-                            opacity: lvl.unlocked ? 1 : 0.5,
-                            cursor: lvl.unlocked ? 'pointer' : 'not-allowed',
-                            background: lvl.completed ? "linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)" : undefined,
-                            color: lvl.completed ? 'white' : 'black'
-                        }}
-                        onClick={() => {
-                            if (lvl.unlocked) {
-                                navigate(`/quiz/${bookFile}/${lvl.level}`);
-                            }
-                        }}
-                    >
-                        {lvl.level} {lvl.completed && "✓"}
-                    </button>
-                ))}
+                <div className="grid-container" id="levels-grid">
+                    {levels.map((lvl) => (
+                        <button
+                            key={lvl.level}
+                            className="level-btn"
+                            style={{
+                                opacity: lvl.unlocked ? 1 : 0.5,
+                                cursor: lvl.unlocked ? 'pointer' : 'not-allowed',
+                                background: lvl.completed ? "linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%)" : undefined,
+                                color: lvl.completed ? 'white' : 'black'
+                            }}
+                            onClick={() => {
+                                if (lvl.unlocked) {
+                                    navigate(`/quiz/${bookFile}/${lvl.level}`);
+                                }
+                            }}
+                        >
+                            {lvl.level} {lvl.completed && "✓"}
+                        </button>
+                    ))}
+                </div>
             </div>
         </div>
     );

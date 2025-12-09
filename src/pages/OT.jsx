@@ -52,18 +52,50 @@ const books = [
 
 const OldTestament = () => {
     const navigate = useNavigate();
+    const observerRef = React.useRef(null);
+
+    React.useEffect(() => {
+        observerRef.current = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('scroll-visible');
+                    entry.target.classList.remove('scroll-hidden');
+                } else {
+                    // Optional: Remove class to re-animate when scrolling back up
+                    // entry.target.classList.remove('scroll-visible');
+                    // entry.target.classList.add('scroll-hidden');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const elements = document.querySelectorAll('.scroll-hidden');
+        elements.forEach((el) => observerRef.current.observe(el));
+
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, []);
+
     return (
-        <div className="container">
-            <header>
-                <div className="menu-icon" onClick={() => navigate('/')}>&#8592;</div>
-                <h1>పాత నిబంధన</h1>
-            </header>
-            <div style={{ width: '100%', textAlign: 'center' }}>
-                {books.map((book) => (
-                    <Link to={`/levels/${book.file}`} key={book.id} className="book-link box">
-                        {book.name}
-                    </Link>
-                ))}
+        <div className="books-bg-wrapper">
+            <div className="container">
+                <header>
+                    <div className="menu-icon" onClick={() => navigate('/')}>&#8592;</div>
+                    <h1>పాత నిబంధన</h1>
+                </header>
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                    {books.map((book) => (
+                        <Link
+                            to={`/levels/${book.file}`}
+                            key={book.id}
+                            className="book-link box scroll-hidden"
+                        >
+                            {book.name}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     );
