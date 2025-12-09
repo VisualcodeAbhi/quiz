@@ -33,8 +33,12 @@ const Quiz = () => {
             setQuizFinished(false);
             setCurrentQuestionIndex(0);
             setScore(0);
+            setScore(0);
             setTimer(30);
             setShowConfetti(false);
+            setSelectedOption(null);
+            setIsCorrect(null);
+            setShowFeedback(false);
 
             try {
                 const module = await import(`../assets/data/${bookFile}.json`);
@@ -175,6 +179,9 @@ const Quiz = () => {
                                 setScore(0);
                                 setTimer(30);
                                 setShowConfetti(false);
+                                setSelectedOption(null);
+                                setIsCorrect(null);
+                                setShowFeedback(false);
                             }}>
                                 <span className="btn-main-text">Retry</span>
                             </button>
@@ -191,75 +198,77 @@ const Quiz = () => {
     const currentQuestion = questions[currentQuestionIndex];
 
     return (
-        <div className="quiz-wrapper">
-            {/* Feedback Overlay */}
-            {showFeedback && (
-                <div className="feedback-overlay" style={{
-                    display: 'flex',
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    pointerEvents: 'none',
-                    background: 'rgba(0,0,0,0.3)' // Subtle dim
-                }}>
-                    <div className={`feedback-icon ${feedbackType}`} style={{
-                        fontSize: '100px',
-                        fontWeight: 'bold',
-                        color: feedbackType === 'correct' ? '#4CAF50' : '#F44336',
-                        textShadow: feedbackType === 'correct' ? '0 0 20px rgba(76, 175, 80, 0.8)' : '0 0 20px rgba(244, 67, 54, 0.8)',
-                        animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        <div className="quiz-bg-wrapper">
+            <div className="quiz-wrapper">
+                {/* Feedback Overlay */}
+                {showFeedback && (
+                    <div className="feedback-overlay" style={{
+                        display: 'flex',
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        pointerEvents: 'none',
+                        background: 'rgba(0,0,0,0.3)' // Subtle dim
                     }}>
-                        {feedbackType === 'correct' ? '✓' : '✗'}
+                        <div className={`feedback-icon ${feedbackType}`} style={{
+                            fontSize: '100px',
+                            fontWeight: 'bold',
+                            color: feedbackType === 'correct' ? '#4CAF50' : '#F44336',
+                            textShadow: feedbackType === 'correct' ? '0 0 20px rgba(76, 175, 80, 0.8)' : '0 0 20px rgba(244, 67, 54, 0.8)',
+                            animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                        }}>
+                            {feedbackType === 'correct' ? '✓' : '✗'}
+                        </div>
                     </div>
+                )}
+
+                {/* Per-question Confetti */}
+                {showFeedback && feedbackType === 'correct' && (
+                    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 99 }}>
+                        <Confetti recycle={false} numberOfPieces={100} gravity={0.5} />
+                    </div>
+                )}
+
+                <header className="header">
+                    <div className="back-arrow" onClick={() => navigate(-1)}>&#8592;</div>
+                    <div className="title-container" style={{ textAlign: 'center', width: '100%' }}>
+                        <h1 id="book-title">{bookNameMap[bookData.bookName] || bookData.bookName}</h1>
+                        <div className="chapter-info">Chapter {level} - {currentQuestionIndex + 1}/{questions.length}</div>
+                    </div>
+                    <div className="timer-circle" style={{ margin: 0, justifySelf: 'end' }}>{timer}</div>
+                </header>
+
+                <img src="/images/Logo1.png" alt="Quiz Logo" style={{ width: '230px', height: 'auto', marginBottom: '20px' }} />
+
+                <div className="question-box">
+                    <p>{currentQuestion.question}</p>
                 </div>
-            )}
 
-            {/* Per-question Confetti */}
-            {showFeedback && feedbackType === 'correct' && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 99 }}>
-                    <Confetti recycle={false} numberOfPieces={100} gravity={0.5} />
+                <div className="options-container">
+                    {currentQuestion.options.map((option, idx) => {
+                        let className = "option-btn";
+                        if (selectedOption !== null) {
+                            if (idx === currentQuestion.correct) className += " correct";
+                            if (idx === selectedOption && idx !== currentQuestion.correct) className += " wrong";
+                        }
+
+                        return (
+                            <button
+                                key={idx}
+                                className={className}
+                                onClick={() => handleOptionClick(idx)}
+                                disabled={selectedOption !== null}
+                            >
+                                {option}
+                            </button>
+                        );
+                    })}
                 </div>
-            )}
-
-            <header className="header">
-                <div className="back-arrow" onClick={() => navigate(-1)}>&#8592;</div>
-                <div className="title-container" style={{ textAlign: 'center', width: '100%' }}>
-                    <h1 id="book-title">{bookNameMap[bookData.bookName] || bookData.bookName}</h1>
-                    <div className="chapter-info">Chapter {level} - {currentQuestionIndex + 1}/{questions.length}</div>
-                </div>
-                <div className="timer-circle" style={{ margin: 0, justifySelf: 'end' }}>{timer}</div>
-            </header>
-
-            <img src="/images/Logo1.png" alt="Quiz Logo" style={{ width: '230px', height: 'auto', marginBottom: '20px' }} />
-
-            <div className="question-box">
-                <p>{currentQuestion.question}</p>
-            </div>
-
-            <div className="options-container">
-                {currentQuestion.options.map((option, idx) => {
-                    let className = "option-btn";
-                    if (selectedOption !== null) {
-                        if (idx === currentQuestion.correct) className += " correct";
-                        if (idx === selectedOption && idx !== currentQuestion.correct) className += " wrong";
-                    }
-
-                    return (
-                        <button
-                            key={idx}
-                            className={className}
-                            onClick={() => handleOptionClick(idx)}
-                            disabled={selectedOption !== null}
-                        >
-                            {option}
-                        </button>
-                    );
-                })}
             </div>
         </div>
     );

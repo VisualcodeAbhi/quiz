@@ -52,31 +52,6 @@ const books = [
 
 const OldTestament = () => {
     const navigate = useNavigate();
-    const observerRef = React.useRef(null);
-
-    React.useEffect(() => {
-        observerRef.current = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('scroll-visible');
-                    entry.target.classList.remove('scroll-hidden');
-                } else {
-                    // Optional: Remove class to re-animate when scrolling back up
-                    // entry.target.classList.remove('scroll-visible');
-                    // entry.target.classList.add('scroll-hidden');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        const elements = document.querySelectorAll('.scroll-hidden');
-        elements.forEach((el) => observerRef.current.observe(el));
-
-        return () => {
-            if (observerRef.current) {
-                observerRef.current.disconnect();
-            }
-        };
-    }, []);
 
     return (
         <div className="books-bg-wrapper">
@@ -90,7 +65,7 @@ const OldTestament = () => {
                         <Link
                             to={`/levels/${book.file}`}
                             key={book.id}
-                            className="book-link box scroll-hidden"
+                            className="book-link box"
                         >
                             {book.name}
                         </Link>
