@@ -43,7 +43,13 @@ const Quiz = () => {
 
                 const levelQuestions = data.levels[level];
                 if (levelQuestions) {
-                    setQuestions(levelQuestions);
+                    // Randomize questions using Fisher-Yates shuffle
+                    const shuffled = [...levelQuestions];
+                    for (let i = shuffled.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                    }
+                    setQuestions(shuffled);
                 } else {
                     console.error("Level not found");
                 }
