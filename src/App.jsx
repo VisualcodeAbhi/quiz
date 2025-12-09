@@ -12,6 +12,26 @@ const Quiz = lazy(() => import('./pages/Quiz'));
 const Statistics = lazy(() => import('./pages/Statistics'));
 
 function App() {
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const handleLoad = () => setIsLoading(false);
+
+        // Wait for connection to be stable and assets to load
+        if (document.readyState === 'complete') {
+            setTimeout(() => setIsLoading(false), 2000);
+        } else {
+            window.addEventListener('load', () => {
+                setTimeout(() => setIsLoading(false), 2000);
+            });
+            return () => window.removeEventListener('load', handleLoad);
+        }
+    }, []);
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
     return (
         <ScreenRestriction>
             <Router>
